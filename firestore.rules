@@ -1,0 +1,47 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Perfis de usuários institucionais
+    match /profiles/{profileId} {
+      allow read, write: if true;
+    }
+
+    // Equipes de trabalho do RH
+    match /equipes/{equipeId} {
+      allow read, write: if true;
+    }
+
+    // Categorias de atividades institucionais
+    match /categorias_atividade/{categoriaId} {
+      allow read, write: if true;
+    }
+
+    // Catálogo de Atividades
+    match /atividades/{atividadeId} {
+      allow read, write: if true;
+    }
+
+    // Lançamentos de atividades e atendimentos
+    match /lancamentos/{lancamentoId} {
+      allow read, write: if true;
+    }
+
+    // Fechamento mensal
+    match /meses_fechados/{mesFechadoId} {
+      allow read, write: if true;
+    }
+
+    // Trilha de auditoria
+    match /auditoria/{auditoriaId} {
+      allow read, write: if true;
+    }
+
+    // Documento de teste de conectividade
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+  }
+}
+

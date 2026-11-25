@@ -1,0 +1,6 @@
+{
+  "name": "SisRH Atividades - Gestão de Atendimento e Produtividade",
+  "description": "Sistema de registro, consolidação e relatórios de atividades e atendimentos do setor de Recursos Humanos de instituição pública.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

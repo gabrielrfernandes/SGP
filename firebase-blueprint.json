@@ -1,0 +1,152 @@
+{
+  "entities": {
+    "Profile": {
+      "title": "Profile",
+      "description": "Perfil institucional de servidor público ou gestor do RH",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "nome_completo": { "type": "string" },
+        "email": { "type": "string" },
+        "matricula_siape": { "type": "string" },
+        "cargo": { "type": "string", "enum": ["1", "2", "3", "4"] },
+        "perfil": { "type": "string", "enum": ["admin", "padrao", "gestor", "colaborador"] },
+        "ativo": { "type": "boolean" },
+        "criado_em": { "type": "string", "format": "date-time" },
+        "atualizado_em": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "nome_completo", "email", "perfil", "ativo"]
+    },
+    "Equipe": {
+      "title": "Equipe",
+      "description": "Equipe ou dupla de trabalho de RH (ex: Renan e Josi)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "nome": { "type": "string" },
+        "descricao": { "type": "string" },
+        "sigla": { "type": "string" },
+        "ativo": { "type": "boolean" },
+        "membros": {
+          "type": "array"
+        },
+        "criado_em": { "type": "string", "format": "date-time" },
+        "atualizado_em": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "nome", "ativo"]
+    },
+    "CategoriaAtividade": {
+      "title": "CategoriaAtividade",
+      "description": "Categoria temática de atividades de RH",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "nome": { "type": "string" },
+        "descricao": { "type": "string" },
+        "ordem": { "type": "number" },
+        "criado_em": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "nome", "ordem"]
+    },
+    "Atividade": {
+      "title": "Atividade",
+      "description": "Atividade do catálogo de RH medida em quantidade ou horas",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "categoria_id": { "type": "string" },
+        "nome": { "type": "string" },
+        "descricao": { "type": "string" },
+        "tipo_medida": { "type": "string", "enum": ["quantidade", "horas"] },
+        "ativo": { "type": "boolean" },
+        "vigencia_inicio": { "type": "string" },
+        "vigencia_fim": { "type": "string" },
+        "ordem": { "type": "number" },
+        "criado_em": { "type": "string", "format": "date-time" },
+        "atualizado_em": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "categoria_id", "nome", "tipo_medida", "ativo", "vigencia_inicio"]
+    },
+    "Lancamento": {
+      "title": "Lancamento",
+      "description": "Registro diário de atividade ou atendimento realizado",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "equipe_id": { "type": "string" },
+        "atividade_id": { "type": "string" },
+        "registrado_por": { "type": "string" },
+        "data": { "type": "string" },
+        "quantidade": { "type": "number" },
+        "horas": { "type": "number" },
+        "duracao_minutos": { "type": "number" },
+        "descricao": { "type": "string" },
+        "observacao": { "type": "string" },
+        "criado_em": { "type": "string", "format": "date-time" },
+        "atualizado_em": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "equipe_id", "atividade_id", "registrado_por", "data"]
+    },
+    "MesFechado": {
+      "title": "MesFechado",
+      "description": "Bloqueio de período mensal por equipe para impedir edições",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "equipe_id": { "type": "string" },
+        "ano": { "type": "number" },
+        "mes": { "type": "number" },
+        "fechado_por": { "type": "string" },
+        "fechado_em": { "type": "string", "format": "date-time" },
+        "motivo": { "type": "string" }
+      },
+      "required": ["id", "equipe_id", "ano", "mes", "fechado_por", "fechado_em"]
+    },
+    "Auditoria": {
+      "title": "Auditoria",
+      "description": "Trilha de auditoria LGPD de alterações cadastrais",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "tabela": { "type": "string" },
+        "registro_id": { "type": "string" },
+        "acao": { "type": "string", "enum": ["INSERT", "UPDATE", "DELETE"] },
+        "usuario_id": { "type": "string" },
+        "dados_antes": { "type": "object" },
+        "dados_depois": { "type": "object" },
+        "data": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "tabela", "acao", "data"]
+    }
+  },
+  "firestore": {
+    "/profiles/{profileId}": {
+      "schema": "Profile",
+      "description": "Perfis de usuários do sistema"
+    },
+    "/equipes/{equipeId}": {
+      "schema": "Equipe",
+      "description": "Equipes de trabalho cadastradas"
+    },
+    "/categorias_atividade/{categoriaId}": {
+      "schema": "CategoriaAtividade",
+      "description": "Categorias de atividades do RH"
+    },
+    "/atividades/{atividadeId}": {
+      "schema": "Atividade",
+      "description": "Catálogo oficial de atividades"
+    },
+    "/lancamentos/{lancamentoId}": {
+      "schema": "Lancamento",
+      "description": "Lançamentos e registros de atendimento"
+    },
+    "/meses_fechados/{mesFechadoId}": {
+      "schema": "MesFechado",
+      "description": "Histórico de homologação e fechamento mensal"
+    },
+    "/auditoria/{auditoriaId}": {
+      "schema": "Auditoria",
+      "description": "Trilha de auditoria de alterações"
+    }
+  }
+}
